@@ -33,6 +33,24 @@
 
 1. **Install and Configure Routing and Remote Access Service (RRAS)**:
     - Open the **Server Manager**.
+        ```Method 1: Using the Start Menu
+Click on the Start button.
+Search for "Server Manager" by typing it into the search box.
+Click on "Server Manager" when it appears in the search results.
+Method 2: Using the Run Dialog
+Press Windows + R to open the Run dialog.
+Type ServerManager and press Enter.
+Method 3: Using Command Prompt or PowerShell
+Open Command Prompt or PowerShell.
+Type ServerManager and press Enter.
+Method 4: Using the Taskbar
+Click on the Server Manager icon if it is pinned to the taskbar. This icon usually looks like a server rack.
+Method 5: Using the Control Panel
+Open the Control Panel.
+Go to "System and Security".
+Click on "Administrative Tools".
+Double-click on "Server Manager".
+```
     - Go to **Manage** > **Add Roles and Features**.
     - Select **Role-based or feature-based installation** and click **Next**.
     - Choose the server and click **Next**.
