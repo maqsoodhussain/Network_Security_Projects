@@ -34,28 +34,28 @@
 1. **Install and Configure Routing and Remote Access Service (RRAS)**:
     - Open the **Server Manager**.   **Press ```Windows + R``` to open the Run dialog.
 Type ```ServerManager``` and press Enter.**
-    - Go to **Manage** > **Add Roles and Features**.
-    - Select **Role-based or feature-based installation** and click **Next**.
-    - Choose the server and click **Next**.
-    - Select **Remote Access** role and click **Next**.
-    - Click **Next** on the Features page.
-    - Check **DirectAccess and VPN (RAS)** and click **Next**.
-    - Click **Next** on the Web Server Role (IIS) page and install.
-    - After installation, open the **Routing and Remote Access** console.
-    - Right-click on the server name and select **Configure and Enable Routing and Remote Access**.
-    - Select **Custom configuration** and check **VPN Access**.
+    - Go to ```**Manage**``` > ```**Add Roles and Features**```.
+    - Select ```**Role-based or feature-based installation**``` and click ```**Next**```.
+    - Choose the server and click ```**Next**```.
+    - Select ```**Remote Access**``` role and click ```**Next**```.
+    - Click ```**Next**``` on the Features page.
+    - Check ```**DirectAccess and VPN (RAS)**``` and click ```**Next**```.
+    - Click ```**Next**``` on the Web Server Role (IIS) page and install.
+    - After installation, open the ```**Routing and Remote Access**``` console.
+    - Right-click on the server name and select ```**Configure and Enable Routing and Remote Access**```.
+    - Select ```**Custom configuration**``` and check ```**VPN Access**```.
     - Start the service.
 
 2. **Configure IPsec Policies**:
-    - Open **Windows Defender Firewall with Advanced Security**.
-    - Go to **IPsec Policies** on Local Computer.
-    - Right-click and select **Manage IP Filter Lists and Filter Actions**.
+    - Open ```**Windows Defender Firewall with Advanced Security**```.
+    - Go to ```**IPsec Policies**``` on Local Computer.
+    - Right-click and select ```**Manage IP Filter Lists and Filter Actions**```.
     - Create a new filter list and specify the source and destination IP addresses.
     - Create a filter action to permit, block, or negotiate security.
     - Define a rule using the filter list and filter action created.
 
 3. **Configure IKE Authentication**:
-    - Still in **Windows Defender Firewall with Advanced Security**, go to **IP Security Policies**.
+    - Still in ```**Windows Defender Firewall with Advanced Security**```, go to ```**IP Security Policies**```.
     - Create a new policy with the following settings:
         - Authentication method: Use a pre-shared key or certificates.
         - Security methods: Define the encryption and integrity algorithms (e.g., AES, SHA).
@@ -63,19 +63,19 @@ Type ```ServerManager``` and press Enter.**
 ##### 2. Configure the VPN Client (Windows Machine)
 
 1. **Set Up VPN Connection**:
-    - Open **Settings** > **Network & Internet** > **VPN**.
-    - Click **Add a VPN connection**.
+    - Open ```**Settings**``` > ```**Network & Internet**``` > ```**VPN**```.
+    - Click ```**Add a VPN connection**```.
     - Provide the VPN connection name, server name or address, VPN type (Windows (built-in)), and sign-in info.
-    - Click **Save**.
+    - Click ```**Save**```.
 
 2. **Configure IPsec Settings**:
-    - Open **Windows Defender Firewall with Advanced Security**.
-    - Go to **IPsec Policies** on Local Computer and create a new policy similar to the one on the server.
+    - Open ```**Windows Defender Firewall with Advanced Security**```.
+    - Go to ```**IPsec Policies**``` on Local Computer and create a new policy similar to the one on the server.
     - Ensure that the authentication method and encryption settings match those configured on the server.
 
 3. **Connect to VPN**:
-    - Go to **Settings** > **Network & Internet** > **VPN**.
-    - Select the VPN connection and click **Connect**.
+    - Go to ```**Settings**``` > ```**Network & Internet**``` > ```**VPN**```.
+    - Select the VPN connection and click ```**Connect**```.
     - Enter credentials if prompted and establish the connection.
 
 ### Verifying the IPsec VPN
