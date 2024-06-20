@@ -32,8 +32,8 @@
 ##### 1. Configure the VPN Server (Windows Machine)
 
 1. **Install and Configure Routing and Remote Access Service (RRAS)**:
-    - Open the **Server Manager**.  > Press Windows + R to open the Run dialog.
-Type ServerManager and press Enter.
+    - Open the **Server Manager**.   **Press Windows + R* to open the Run dialog.
+Type *ServerManager* and press Enter.**
     - Go to **Manage** > **Add Roles and Features**.
     - Select **Role-based or feature-based installation** and click **Next**.
     - Choose the server and click **Next**.
