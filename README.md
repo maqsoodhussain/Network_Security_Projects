@@ -4,7 +4,7 @@
 ## IPsec VPN between two Windows machines - GUI
 
 
-  '''
+  """
 ### Introduction to IPsec
 
 **IPsec (Internet Protocol Security)** is a suite of protocols designed to secure IP communications by authenticating and encrypting each IP packet in a communication session. IPsec operates in two modes:
@@ -96,4 +96,4 @@
 This setup provides a basic configuration for a secure IPsec VPN between two Windows machines, ensuring secure communication through encryption and authentication mechanisms provided by IPsec.
 
 
-  '''
+"""
