@@ -4,20 +4,20 @@
 ## IPsec VPN between two Windows machines - GUI
 
 
-  """
+  ```
 ### Introduction to IPsec
 
-**IPsec (Internet Protocol Security)** > is a suite of protocols designed to secure IP communications by authenticating and encrypting each IP packet in a communication session. IPsec operates in two modes:
+**IPsec (Internet Protocol Security)** is a suite of protocols designed to secure IP communications by authenticating and encrypting each IP packet in a communication session. IPsec operates in two modes:
 
-1. **Transport Mode**: > Encrypts only the payload of the IP packet, leaving the header untouched.
-2. **Tunnel Mode**: > Encrypts the entire IP packet and encapsulates it into a new IP packet with a new header.
+1. **Transport Mode**: Encrypts only the payload of the IP packet, leaving the header untouched.
+2. **Tunnel Mode**: Encrypts the entire IP packet and encapsulates it into a new IP packet with a new header.
 
 ### IPsec Components
 
-1. **Authentication Header (AH)**: > Provides data integrity, data origin authentication, and an optional anti-replay service.
-2. **Encapsulating Security Payload (ESP)**: > Provides confidentiality, along with optional integrity and authentication.
-3. **Security Associations (SAs)**: > Establishes the parameters for authentication and encryption. These are managed through protocols like IKE (Internet Key Exchange).
-4. **Internet Key Exchange (IKE)**: > A protocol used to set up SAs. IKEv1 and IKEv2 are the commonly used versions.
+1. **Authentication Header (AH)**: Provides data integrity, data origin authentication, and an optional anti-replay service.
+2. **Encapsulating Security Payload (ESP)**: Provides confidentiality, along with optional integrity and authentication.
+3. **Security Associations (SAs)**: Establishes the parameters for authentication and encryption. These are managed through protocols like IKE (Internet Key Exchange).
+4. **Internet Key Exchange (IKE)**: A protocol used to set up SAs. IKEv1 and IKEv2 are the commonly used versions.
 
 ### Setting up an IPsec VPN on Windows Machines
 
@@ -96,4 +96,4 @@
 This setup provides a basic configuration for a secure IPsec VPN between two Windows machines, ensuring secure communication through encryption and authentication mechanisms provided by IPsec.
 
 
-"""
+```
