@@ -1,89 +1,138 @@
-### Introduction to IPsec
+Certainly! I'll explain the scripts step-by-step and how to run them on the respective machines. 
 
-**IPsec (Internet Protocol Security)** is a suite of protocols designed to secure IP communications by authenticating and encrypting each IP packet in a communication session. IPsec operates in two modes:
+### VPN Server Configuration Script
 
-1. **Transport Mode**: Encrypts only the payload of the IP packet, leaving the header untouched.
-2. **Tunnel Mode**: Encrypts the entire IP packet and encapsulates it into a new IP packet with a new header.
+Save the following script as `configure_vpn_server.py`. This script is to be run on the VPN server machine:
 
-### IPsec Components
+```python
+import subprocess
 
-1. **Authentication Header (AH)**: Provides data integrity, data origin authentication, and an optional anti-replay service.
-2. **Encapsulating Security Payload (ESP)**: Provides confidentiality, along with optional integrity and authentication.
-3. **Security Associations (SAs)**: Establishes the parameters for authentication and encryption. These are managed through protocols like IKE (Internet Key Exchange).
-4. **Internet Key Exchange (IKE)**: A protocol used to set up SAs. IKEv1 and IKEv2 are the commonly used versions.
+def run_powershell_command(command):
+    """Run a PowerShell command"""
+    completed_process = subprocess.run(["powershell", "-Command", command], capture_output=True, text=True)
+    if completed_process.returncode != 0:
+        print(f"Error: {completed_process.stderr}")
+    else:
+        print(completed_process.stdout)
 
-### Setting up an IPsec VPN on Windows Machines
+def configure_vpn_server():
+    """Configure the VPN server"""
+    # Install the Remote Access role with VPN
+    commands = [
+        "Install-WindowsFeature RemoteAccess -IncludeManagementTools",
+        "Install-WindowsFeature Routing -IncludeManagementTools",
+        "Add-WindowsFeature -Name RemoteAccess, DirectAccess-VPN, Routing -IncludeManagementTools",
+        "Install-RemoteAccess -VpnType Vpn"
+    ]
+    
+    for command in commands:
+        run_powershell_command(command)
 
-#### Prerequisites
+    # Configure IPsec policy on the server
+    ipsec_server_policy = """
+    New-NetIPsecMainModeCryptoSet -Name "IPsecCryptoSet"
+    New-NetIPsecQuickModeCryptoSet -Name "IPsecQuickMode"
+    New-NetIPsecPhase1AuthSet -Name "IPsecAuth" -KerberosAuthentication
+    New-NetIPsecRule -DisplayName "IPsecRule" -InboundSecurity Require -OutboundSecurity Require -MainModeCryptoSet "IPsecCryptoSet" -QuickModeCryptoSet "IPsecQuickMode" -Phase1AuthSet "IPsecAuth"
+    """
+    run_powershell_command(ipsec_server_policy)
 
-- Two Windows machines (one as the server and one as the client).
-- Administrative privileges on both machines.
-- Both machines should be on the same network or have a network path between them.
+def main():
+    # Configure the server
+    print("Configuring VPN Server...")
+    configure_vpn_server()
 
-#### Step-by-Step Configuration
+if __name__ == "__main__":
+    main()
+```
 
-##### 1. Configure the VPN Server (Windows Machine)
+### Explanation:
 
-1. **Install and Configure Routing and Remote Access Service (RRAS)**:
-    - Open the **Server Manager**.
-    - Go to **Manage** > **Add Roles and Features**.
-    - Select **Role-based or feature-based installation** and click **Next**.
-    - Choose the server and click **Next**.
-    - Select **Remote Access** role and click **Next**.
-    - Click **Next** on the Features page.
-    - Check **DirectAccess and VPN (RAS)** and click **Next**.
-    - Click **Next** on the Web Server Role (IIS) page and install.
-    - After installation, open the **Routing and Remote Access** console.
-    - Right-click on the server name and select **Configure and Enable Routing and Remote Access**.
-    - Select **Custom configuration** and check **VPN Access**.
-    - Start the service.
+1. **Imports and Helper Function:**
+   - The script imports the `subprocess` module, which is used to run PowerShell commands.
+   - The `run_powershell_command` function executes a given PowerShell command and prints the output or error.
 
-2. **Configure IPsec Policies**:
-    - Open **Windows Defender Firewall with Advanced Security**.
-    - Go to **IPsec Policies** on Local Computer.
-    - Right-click and select **Manage IP Filter Lists and Filter Actions**.
-    - Create a new filter list and specify the source and destination IP addresses.
-    - Create a filter action to permit, block, or negotiate security.
-    - Define a rule using the filter list and filter action created.
+2. **Configuration Function:**
+   - `configure_vpn_server` function runs several PowerShell commands to install necessary features and configure the VPN server:
+     - Install the Remote Access role.
+     - Install the Routing role service.
+     - Add the VPN and DirectAccess features.
+     - Install and configure the Remote Access service with VPN type.
 
-3. **Configure IKE Authentication**:
-    - Still in **Windows Defender Firewall with Advanced Security**, go to **IP Security Policies**.
-    - Create a new policy with the following settings:
-        - Authentication method: Use a pre-shared key or certificates.
-        - Security methods: Define the encryption and integrity algorithms (e.g., AES, SHA).
+3. **IPsec Policy Configuration:**
+   - The script sets up the IPsec policies required for secure communication.
 
-##### 2. Configure the VPN Client (Windows Machine)
+4. **Main Function:**
+   - The `main` function calls the `configure_vpn_server` function to start the configuration.
 
-1. **Set Up VPN Connection**:
-    - Open **Settings** > **Network & Internet** > **VPN**.
-    - Click **Add a VPN connection**.
-    - Provide the VPN connection name, server name or address, VPN type (Windows (built-in)), and sign-in info.
-    - Click **Save**.
+### VPN Client Configuration Script
 
-2. **Configure IPsec Settings**:
-    - Open **Windows Defender Firewall with Advanced Security**.
-    - Go to **IPsec Policies** on Local Computer and create a new policy similar to the one on the server.
-    - Ensure that the authentication method and encryption settings match those configured on the server.
+Save the following script as `configure_vpn_client.py`. This script is to be run on the VPN client machine. Make sure to replace `server_ip` with the actual IP address of the VPN server:
 
-3. **Connect to VPN**:
-    - Go to **Settings** > **Network & Internet** > **VPN**.
-    - Select the VPN connection and click **Connect**.
-    - Enter credentials if prompted and establish the connection.
+```python
+import subprocess
 
-### Verifying the IPsec VPN
+def run_powershell_command(command):
+    """Run a PowerShell command"""
+    completed_process = subprocess.run(["powershell", "-Command", command], capture_output=True, text=True)
+    if completed_process.returncode != 0:
+        print(f"Error: {completed_process.stderr}")
+    else:
+        print(completed_process.stdout)
 
-1. **Check the Connection**:
-    - Ensure that the client is able to ping the server and vice versa.
-    - Verify that the data is encrypted by capturing packets using a tool like Wireshark.
+def configure_vpn_client(server_ip):
+    """Configure the VPN client"""
+    # Add VPN connection
+    command = f'Add-VpnConnection -Name "MyVPN" -ServerAddress "{server_ip}" -TunnelType "Ikev2" -AuthenticationMethod EAP'
+    run_powershell_command(command)
 
-2. **Monitor the VPN Connection**:
-    - On the server, open **Routing and Remote Access** console and check the status of the VPN connection.
-    - On the client, verify the connection status in **Network & Internet** > **VPN**.
+    # Configure IPsec policy on the client
+    ipsec_client_policy = """
+    New-NetIPsecMainModeCryptoSet -Name "IPsecCryptoSet"
+    New-NetIPsecQuickModeCryptoSet -Name "IPsecQuickMode"
+    New-NetIPsecPhase1AuthSet -Name "IPsecAuth" -KerberosAuthentication
+    New-NetIPsecRule -DisplayName "IPsecRule" -InboundSecurity Require -OutboundSecurity Require -MainModeCryptoSet "IPsecCryptoSet" -QuickModeCryptoSet "IPsecQuickMode" -Phase1AuthSet "IPsecAuth"
+    """
+    run_powershell_command(ipsec_client_policy)
 
-### Troubleshooting Tips
+def main():
+    server_ip = "192.168.1.1"  # Replace with the actual IP address of the VPN server
 
-1. **Ensure both machines have the same time and date settings**: IPsec can fail if there is a significant time difference.
-2. **Check firewall settings**: Ensure that necessary ports (e.g., UDP 500 for IKE, UDP 4500 for NAT-T) are open.
-3. **Verify IPsec policies and settings**: Ensure that policies match on both server and client.
+    # Configure the client
+    print("Configuring VPN Client...")
+    configure_vpn_client(server_ip)
 
-This setup provides a basic configuration for a secure IPsec VPN between two Windows machines, ensuring secure communication through encryption and authentication mechanisms provided by IPsec.
+if __name__ == "__main__":
+    main()
+```
+
+### Explanation:
+
+1. **Imports and Helper Function:**
+   - Similar to the server script, this script uses `subprocess` to run PowerShell commands.
+   - The `run_powershell_command` function is used to execute and handle PowerShell commands.
+
+2. **Configuration Function:**
+   - `configure_vpn_client` function runs the following PowerShell commands:
+     - Add a VPN connection with specified server address, tunnel type, and authentication method.
+     - Configure IPsec policies on the client to match those on the server.
+
+3. **Main Function:**
+   - The `main` function sets the `server_ip` (which should be replaced with the actual IP address of the VPN server) and calls `configure_vpn_client` to start the configuration.
+
+### Instructions to Run the Scripts:
+
+1. **Run on Server:**
+   - Save the `configure_vpn_server.py` script.
+   - Open a command prompt with administrative privileges on the VPN server.
+   - Navigate to the directory where the script is saved.
+   - Execute the script: `python configure_vpn_server.py`.
+
+2. **Run on Client:**
+   - Save the `configure_vpn_client.py` script.
+   - Replace `server_ip` with the actual IP address of the VPN server in the script.
+   - Open a command prompt with administrative privileges on the VPN client.
+   - Navigate to the directory where the script is saved.
+   - Execute the script: `python configure_vpn_client.py`.
+
+These simplified scripts should set up a basic IPsec VPN connection between the two Windows machines, with necessary IPsec policies to secure the communication. Make sure both machines are on the same network and have administrative privileges to execute these commands.
